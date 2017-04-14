@@ -7,11 +7,6 @@ import Movies from './components/Movies/Movies'
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      optionMovies: [],
-      selectedMovies: [],
-      valueSearch: ''
-    }
   }
 
   componentDidMount() {
@@ -21,17 +16,20 @@ class App extends Component {
   fetchData() {
 
     const KEY = 'e912614a872157c18ae63dadb63773f5'
-    const VALUE = this.state.valueSearch
+    const { valueSearch: VALUE } = this.props.store.getState()
     const LANGUAJE = 'en-US'
     const URL =  `https://api.themoviedb.org/3/search/movie?api_key=${KEY}&language=${LANGUAJE}&query=${VALUE}&page=1`
-
     if(VALUE) {
       fetch(URL)
       .then(response => response.json())
       .then(data => {
         if(data.results) {
-          const names = data.results.map(movie => movie.original_title)
-          this.setState({optionMovies: names})
+          this.props.store.dispatch(
+            {
+              type: 'FETCH_DATA',
+              payload: data.results
+            }
+          )
         }
       })
     }
@@ -39,29 +37,40 @@ class App extends Component {
 
 
   handleSelectMovie = ev => {
-    this.setState(
+    const { optionMovies } = this.props.store.getState()
+
+    const selected = optionMovies.filter(movie => movie.original_title == ev)
+
+    this.props.store.dispatch(
       {
-        selectedMovies: [...this.state.selectedMovies, ev],
-        valueSearch: ''
+        type: 'SELECT_MOVIE',
+        payload: selected,
       }
     )
   }
 
   handleInput = ev => {
-    this.setState({valueSearch: ev.target.value})
+    this.props.store.dispatch(
+      {
+        type: 'SET_VALUE',
+        payload: ev.target.value
+      }
+    )
     this.fetchData()
   }
 
   render() {
+    //console.log('store',this.props.store.getState())
+    const {optionMovies, selectedMovies, valueSearch} = this.props.store.getState()
     return (
       <div className="App">
         <Searcher
-          data={this.state.optionMovies}
+          data={optionMovies}
           onSelected={this.handleSelectMovie}
           onInput={this.handleInput}
-          filter={this.state.valueSearch}
+          filter={valueSearch}
           />
-        <Movies data={this.state.selectedMovies}/>
+        <Movies data={selectedMovies}/>
       </div>
     );
   }

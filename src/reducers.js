@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 
-
 //SELECT_MOVIE
 
 // ADD_MOVIES
@@ -23,24 +22,23 @@ const optionMovies  = (state = [], action) => {
   switch (action.type) {
     case 'FETCH_DATA':
       return [
-        ...state,
-        action.payload
+        ...action.payload
       ]
     default:
       return state
   }
 }
 
-const valueSearch => (state = '', action) {
+const valueSearch = (state = '', action) => {
   switch (action.type) {
     case 'SET_VALUE':
-      return action.type.payload.text
+      return action.payload
     default:
       return state
   }
 }
 
-const movieApp = combine Reducers({
+const movieApp = combineReducers({
   selectedMovies,
   optionMovies,
   valueSearch

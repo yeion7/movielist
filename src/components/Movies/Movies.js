@@ -5,7 +5,7 @@ function Movies(props) {
       <ul className="movie-list">
         {
           props.data.map(movie =>
-            (<li> {movie} </li>)
+            (<li key={movie[0].id}> {movie[0].original_title} </li>)
           )
         }
       </ul>
