@@ -8,34 +8,48 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      optionMovies: ["Chrome", "Firefox", "Internet Explorer", "Opera", "Safari", "Microsoft Edge"],
+      optionMovies: [],
       selectedMovies: [],
       valueSearch: ''
     }
-
-
   }
 
   componentDidMount() {
-    const KEY = 'e912614a872157c18ae63dadb63773f5'
-    const URL =  `https://api.themoviedb.org/3/search/company?api_key=${KEY}&query=${this.state.valueSearch}&page=1`
+    this.fetchData()
+  }
 
-    fetch(URL)
-    .then(response => response.json())
-    .then(data => {
-      if(data.results) {
-        const names = data.results.map(movie => movie.name)
-        this.setState({optionMovies: names})
-      }
-    })}
+  fetchData() {
+
+    const KEY = 'e912614a872157c18ae63dadb63773f5'
+    const VALUE = this.state.valueSearch
+    const LANGUAJE = 'en-US'
+    const URL =  `https://api.themoviedb.org/3/search/movie?api_key=${KEY}&language=${LANGUAJE}&query=${VALUE}&page=1`
+
+    if(VALUE) {
+      fetch(URL)
+      .then(response => response.json())
+      .then(data => {
+        if(data.results) {
+          const names = data.results.map(movie => movie.original_title)
+          this.setState({optionMovies: names})
+        }
+      })
+    }
+}
 
 
   handleSelectMovie = ev => {
-    this.setState({selectedMovies: [...this.state.selectedMovies, ev]})
+    this.setState(
+      {
+        selectedMovies: [...this.state.selectedMovies, ev],
+        valueSearch: ''
+      }
+    )
   }
 
   handleInput = ev => {
-    console.log('input', ev)
+    this.setState({valueSearch: ev.target.value})
+    this.fetchData()
   }
 
   render() {
@@ -45,6 +59,7 @@ class App extends Component {
           data={this.state.optionMovies}
           onSelected={this.handleSelectMovie}
           onInput={this.handleInput}
+          filter={this.state.valueSearch}
           />
         <Movies data={this.state.selectedMovies}/>
       </div>
