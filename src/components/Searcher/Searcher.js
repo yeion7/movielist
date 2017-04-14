@@ -5,7 +5,7 @@ function mostrar() {
   console.log('se muestra')
 }
 function Searcher(props) {
-    console.log(props)
+    const options = props.data ? props.data : []
     return(
       <ReactDatalist
         list="movies"
