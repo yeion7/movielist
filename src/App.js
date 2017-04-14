@@ -10,12 +10,19 @@ class App extends Component {
     this.state = {
       optionMovies: ["Chrome", "Firefox", "Internet Explorer", "Opera", "Safari", "Microsoft Edge"],
       selectedMovies: []
-    };
+    }
+
+
   }
+
+  selectMovie = ev => {
+    console.log('funciona')
+  }
+
   render() {
     return (
       <div className="App">
-        <Searcher data={this.state.optionMovies} />
+        <Searcher data={this.state.optionMovies} onSelected={this.selectMovie}/>
         <Movies data={this.state.selectedMovies}/>
       </div>
     );
