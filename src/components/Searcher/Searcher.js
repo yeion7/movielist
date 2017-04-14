@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 
-class Searcher extends Component {
-  render() {
+function Searcher(props) {
     return(
       <div>
         <input list="browsers" name="myBrowser" />
         <datalist id="browsers">
-          <option value="Chrome" />
-          <option value="Firefox" />
-          <option value="Internet Explorer" />
-          <option value="Opera" />
-          <option value="Safari" />
-          <option value="Microsoft Edge" />
+          {
+            props.data.map(movie =>
+              (<option value={movie} />)
+            )
+          }
         </datalist>
       </div>
     )
-  }
 }
 
 
