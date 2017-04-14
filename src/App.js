@@ -31,17 +31,21 @@ class App extends Component {
 
 
   handleSelectMovie = ev => {
-    console.log('funciona')
+    this.setState({selectedMovies: [...this.state.selectedMovies, ev]})
   }
 
   handleInput = ev => {
-    console.log(ev)
+    console.log('input', ev)
   }
 
   render() {
     return (
       <div className="App">
-        <Searcher data={this.state.optionMovies} onSelected={this.selectMovie}/>
+        <Searcher
+          data={this.state.optionMovies}
+          onSelected={this.handleSelectMovie}
+          onInput={this.handleInput}
+          />
         <Movies data={this.state.selectedMovies}/>
       </div>
     );

@@ -1,11 +1,7 @@
 import React from 'react';
 import ReactDatalist from 'react-datalist'
 
-function mostrar() {
-  console.log('se muestra')
-}
 function Searcher(props) {
-    const options = props.data ? props.data : []
     return(
       <ReactDatalist
         list="movies"
@@ -14,6 +10,7 @@ function Searcher(props) {
         placeholder='Search a movie'
         forcePoly={true}
         autoPosition={false}
+        onInputChange={props.onInput}
         />
     )
 }
